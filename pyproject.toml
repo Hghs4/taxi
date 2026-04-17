@@ -1,0 +1,24 @@
+[project]
+name = "taxi"
+version = "0.1.0"
+description = "Projet de résolution du problème de taxi"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "marimo[recommended]",
+    "networkx",
+    "pydantic",
+    "typer",
+]
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "mypy",
+    "ruff",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
