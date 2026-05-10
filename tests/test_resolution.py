@@ -1,7 +1,7 @@
 import networkx as nx
 
 from taxi.data import ProblemeTaxi, Route, probleme_exemple
-from taxi.resolution import construit_graphe, resoud
+from taxi.resolution import construit_graphe, resoud, resoud_tous
 
 
 def test_construction_simple():
@@ -50,3 +50,22 @@ def test_resolution_sujet():
     assert resultat is not None
     assert resultat.chemin == [1, 2, 6, 7, 15, 16]
     assert resultat.duree_totale == 18
+
+
+def test_resolution_tous():
+    probleme = ProblemeTaxi(
+        emplacements=[1, 2, 3],
+        routes=[
+            Route(depart=1, arrivee=2, duree=5),
+            Route(depart=2, arrivee=3, duree=2),
+            Route(depart=1, arrivee=3, duree=10),
+        ],
+    )
+    resultat = resoud_tous(probleme=probleme)
+
+    assert resultat[(1, 2)].chemin == [1, 2]
+    assert resultat[(1, 2)].duree_totale == 5
+    assert resultat[(1, 3)].chemin == [1, 2, 3]
+    assert resultat[(1, 3)].duree_totale == 7
+    assert resultat[(2, 3)].chemin == [2, 3]
+    assert resultat[(2, 3)].duree_totale == 2

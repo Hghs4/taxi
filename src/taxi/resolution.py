@@ -34,3 +34,16 @@ def resoud(probleme: ProblemeTaxi, depart: int, arrivee: int) -> SolutionTaxi | 
         chemin=chemin,
         duree_totale=duree_totale,
     )
+
+
+def resoud_tous(probleme: ProblemeTaxi) -> dict[tuple[int, int], SolutionTaxi]:
+    """calcule les chemins les plus courts entre tous les couples d'emplacement."""
+    resultat = dict()
+    for i, depart in enumerate(probleme.emplacements):
+        for arrivee in probleme.emplacements[i + 1 :]:
+            solution = resoud(probleme=probleme, depart=depart, arrivee=arrivee)
+            if solution is not None:
+                resultat[(depart, arrivee)] = solution
+    return resultat
+
+
