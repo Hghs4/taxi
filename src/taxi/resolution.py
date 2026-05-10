@@ -2,7 +2,7 @@
 
 import networkx as nx
 
-from taxi.data import ProblemeTaxi, SolutionTaxi
+from taxi.data import ProblemeTaxi, SolutionTaxi, Route
 
 
 def construit_graphe(probleme: ProblemeTaxi) -> nx.Graph:
@@ -47,3 +47,51 @@ def resoud_tous(probleme: ProblemeTaxi) -> dict[tuple[int, int], SolutionTaxi]:
     return resultat
 
 
+def modifie_route(
+    probleme: ProblemeTaxi,
+    sommet_1: int,
+    sommet_2: int,
+    nouvelle_duree: int,
+) -> ProblemeTaxi:
+    """Renvoie un nouveau problème avec une durée modifiée pour une route."""
+    nouvelles_routes = []
+    for route in probleme.routes:
+        if {route.depart, route.arrivee} == {sommet_1, sommet_2}:
+            nouvelles_routes.append(
+                Route(
+                    depart=route.depart,
+                    arrivee=route.arrivee,
+                    duree=nouvelle_duree,
+                )
+            )
+        else:
+            nouvelles_routes.append(route)
+    return ProblemeTaxi(
+        emplacements=probleme.emplacements,
+        routes=nouvelles_routes,
+    )
+
+
+def etudie_impact_route(
+    probleme: ProblemeTaxi,
+    depart: int,
+    arrivee: int,
+    sommet_1: int,
+    sommet_2: int,
+    durees: list[int],
+) -> dict[int, SolutionTaxi | None]:
+    """impact de plusieurs durées possibles pour une route."""
+    resultat = dict()
+    for duree in durees:
+        probleme_modifie = modifie_route(
+            probleme=probleme,
+            sommet_1=sommet_1,
+            sommet_2=sommet_2,
+            nouvelle_duree=duree,
+        )
+        resultat[duree] = resoud(
+            probleme=probleme_modifie,
+            depart=depart,
+            arrivee=arrivee,
+        )
+    return resultat
