@@ -1,6 +1,6 @@
 import networkx as nx
 
-from taxi.data import ProblemeTaxi, Route
+from taxi.data import ProblemeTaxi, Route, probleme_exemple
 from taxi.resolution import construit_graphe, resoud
 
 
@@ -41,3 +41,12 @@ def test_resolution_impossible():
     resultat = resoud(probleme=probleme, depart=1, arrivee=3)
 
     assert resultat is None
+
+
+def test_resolution_sujet():
+    probleme = probleme_exemple()
+    resultat = resoud(probleme=probleme, depart=1, arrivee=16)
+
+    assert resultat is not None
+    assert resultat.chemin == [1, 2, 6, 7, 15, 16]
+    assert resultat.duree_totale == 18

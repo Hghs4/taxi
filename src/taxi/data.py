@@ -60,3 +60,41 @@ class ProblemeTaxi(BaseModel):
 class SolutionTaxi(BaseModel):
     chemin: list[PositiveInt]
     duree_totale: PositiveInt
+
+
+def probleme_exemple() -> ProblemeTaxi:
+    """la fonction construit le probleme de l'énoncé."""
+    return ProblemeTaxi(
+        emplacements=list(range(1, 17)),
+        routes=[
+            Route(depart=1, arrivee=2, duree=5),
+            Route(depart=1, arrivee=3, duree=9),
+            Route(depart=1, arrivee=4, duree=4),
+            Route(depart=2, arrivee=5, duree=3),
+            Route(depart=2, arrivee=6, duree=2),
+            Route(depart=3, arrivee=4, duree=4),
+            Route(depart=3, arrivee=6, duree=1),
+            Route(depart=4, arrivee=7, duree=7),
+            Route(depart=5, arrivee=8, duree=4),
+            Route(depart=5, arrivee=9, duree=2),
+            Route(depart=5, arrivee=10, duree=9),
+            Route(depart=6, arrivee=7, duree=3),
+            Route(depart=6, arrivee=10, duree=9),
+            Route(depart=6, arrivee=11, duree=6),
+            Route(depart=7, arrivee=11, duree=8),
+            Route(depart=7, arrivee=15, duree=5),
+            Route(depart=8, arrivee=12, duree=5),
+            Route(depart=9, arrivee=8, duree=3),
+            Route(depart=9, arrivee=13, duree=10),
+            Route(depart=10, arrivee=9, duree=6),
+            Route(depart=10, arrivee=13, duree=5),
+            Route(depart=10, arrivee=14, duree=1),
+            Route(depart=11, arrivee=14, duree=2),
+            Route(depart=12, arrivee=16, duree=9),
+            Route(depart=13, arrivee=12, duree=4),
+            Route(depart=13, arrivee=14, duree=3),
+            Route(depart=14, arrivee=16, duree=4),
+            Route(depart=15, arrivee=14, duree=4),
+            Route(depart=15, arrivee=16, duree=3),
+        ],
+    )

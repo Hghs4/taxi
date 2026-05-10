@@ -6,7 +6,7 @@ tests pour le module data.py
 import pytest
 from pydantic import ValidationError
 
-from taxi.data import ProblemeTaxi, Route, SolutionTaxi
+from taxi.data import ProblemeTaxi, Route, SolutionTaxi, probleme_exemple
 
 
 def test_route_boucle():
@@ -53,3 +53,9 @@ def test_solution_taxi():
     solution = SolutionTaxi(chemin=[1, 4, 10], duree_totale=5)
     assert solution.chemin == [1, 4, 10]
     assert solution.duree_totale == 5
+
+
+def test_probleme_exemple():
+    probleme = probleme_exemple()
+    assert len(probleme.emplacements) == 16
+    assert len(probleme.routes) == 29
