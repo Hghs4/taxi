@@ -95,3 +95,57 @@ def etudie_impact_route(
             arrivee=arrivee,
         )
     return resultat
+
+
+def resoud_avec_travaux(
+    probleme: ProblemeTaxi,
+    depart: int,
+    arrivee: int,
+    sommets_en_travaux: list[int],
+    penalite: int,
+) -> SolutionTaxi | None:
+    """resout le problème avec une pénalité de passage sur certains sommets."""
+    graphe = nx.DiGraph()
+
+    for sommet in probleme.emplacements:
+        graphe.add_edge(
+            (sommet, "entree"),
+            (sommet, "sortie"),
+            duree=penalite if sommet in sommets_en_travaux else 0,
+        )
+
+    for route in probleme.routes:
+        graphe.add_edge(
+            (route.depart, "sortie"),
+            (route.arrivee, "entree"),
+            duree=route.duree,
+        )
+        graphe.add_edge(
+            (route.arrivee, "sortie"),
+            (route.depart, "entree"),
+            duree=route.duree,
+        )
+
+    try:
+        chemin_etendu = nx.shortest_path(
+            G=graphe,
+            source=(depart, "sortie"),
+            target=(arrivee, "entree"),
+            weight="duree",
+        )
+        duree_totale = nx.shortest_path_length(
+            G=graphe,
+            source=(depart, "sortie"),
+            target=(arrivee, "entree"),
+            weight="duree",
+        )
+    except nx.NetworkXException:
+        return None
+
+    chemin = [sommet for sommet, position in chemin_etendu if position == "entree"]
+    chemin.insert(0, depart)
+
+    return SolutionTaxi(
+        chemin=chemin,
+        duree_totale=duree_totale,
+    )

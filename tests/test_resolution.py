@@ -7,6 +7,7 @@ from taxi.resolution import (
     resoud_tous,
     modifie_route,
     etudie_impact_route,
+    resoud_avec_travaux,
 )
 
 def test_construction_simple():
@@ -123,3 +124,25 @@ def test_impact_route():
     assert resultat[10] is not None
     assert resultat[10].chemin == [1, 3]
     assert resultat[10].duree_totale == 10
+
+
+def test_resolution_avec_travaux():
+    probleme = ProblemeTaxi(
+        emplacements=[1, 2, 3],
+        routes=[
+            Route(depart=1, arrivee=2, duree=2),
+            Route(depart=2, arrivee=3, duree=2),
+            Route(depart=1, arrivee=3, duree=10),
+        ],
+    )
+    resultat = resoud_avec_travaux(
+        probleme=probleme,
+        depart=1,
+        arrivee=3,
+        sommets_en_travaux=[2],
+        penalite=1,
+    )
+
+    assert resultat is not None
+    assert resultat.chemin == [1, 2, 3]
+    assert resultat.duree_totale == 5
