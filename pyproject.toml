@@ -11,6 +11,9 @@ dependencies = [
     "typer",
 ]
 
+[project.scripts]
+taxi = "taxi.cli:app"
+
 [dependency-groups]
 dev = [
     "pytest",
