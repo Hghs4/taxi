@@ -2,7 +2,7 @@
 
 import typer
 
-from taxi.data import probleme_exemple
+from taxi.data import probleme_exemple, ProblemeTaxi
 from taxi.resolution import (
     etudie_impact_route,
     resoud,
@@ -12,6 +12,23 @@ from taxi.resolution import (
 
 app = typer.Typer()
 
+@app.command()
+def demo():
+    """Génère un fichier JSON du problème exemple."""
+    probleme = probleme_exemple()
+    with open("probleme.json", "w") as fichier:
+        fichier.write(probleme.model_dump_json(indent=2))
+    typer.echo("Fichier probleme.json créé !")
+
+
+@app.command()
+def solve(chemin_fichier: str):
+    """Résout le problème depuis un fichier JSON."""
+    with open(chemin_fichier, "r") as fichier:
+        contenu = fichier.read()
+    probleme = ProblemeTaxi.model_validate_json(contenu)
+    solution = resoud(probleme=probleme, depart=1, arrivee=16)
+    typer.echo(solution)
 
 @app.command()
 def question1():
